@@ -1,27 +1,36 @@
 const webpack = require("webpack");
 
-module.exports = function override (config, env) {
+module.exports = function override(config, env) {
   console.log('override')
   let loaders = config.resolve
   loaders.fallback = {
-      // "fs": false,
-      // "tls": false,
-      // "net": false,
-      // "http": require.resolve("stream-http"),
-      // "https": false,
-      // "zlib": require.resolve("browserify-zlib") ,
-      // "path": require.resolve("path-browserify"),
-      "stream": require.resolve("stream-browserify"),
-      "buffer": require.resolve("buffer"),
-      "crypto": require.resolve("crypto-browserify")
+    "stream": require.resolve("stream-browserify"),
+    "buffer": require.resolve("buffer"),
+    "crypto": require.resolve("crypto-browserify")
   };
   config.plugins = [
     ...config.plugins,
     new webpack.ProvidePlugin({
-        process: "process/browser",
-        Buffer: ["buffer", "Buffer"],
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
     }),
-  ]
-  
+  ];
+  config.module.rules[1].oneOf.splice(2, 0, {
+    test: /\.less$/i,
+    exclude: /\.module\.(less)$/,
+    use: [
+      { loader: "style-loader" },
+      { loader: "css-loader" },
+      {
+        loader: "less-loader",
+        options: {
+          lessOptions: {
+            javascriptEnabled: true,
+          },
+        },
+      },
+    ],
+  })
+
   return config
 }

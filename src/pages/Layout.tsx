@@ -8,6 +8,7 @@ import {
   UserOutlined,
   RadarChartOutlined
 } from '@ant-design/icons';
+import { useAuth  } from "react-oauth2-pkce";
 import '../sass/layout.scss';
 
 import logoReact from "../logo.svg";
@@ -21,6 +22,7 @@ const Layout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [items2, setItems2] = useState<MenuProps['items'] | []>([]);
   const [loading, setLoading] = useState(false);
+  const { authService } = useAuth();
 
   const onCollapse = (collapsed: boolean) => {
     console.log(collapsed);
@@ -36,10 +38,10 @@ const Layout = () => {
       label: 'Inicio',
       onClick: () => navigate("/", { replace: true })
     }, {
-      key: 'permissions',
+      key: 'companies',
       icon: <UsergroupAddOutlined />,
       label: 'Permisos',
-      onClick: () => navigate("/permissions", { replace: true })
+      onClick: () => navigate("/companies", { replace: true })
     }, {
       key: 'audit',
       icon: <RadarChartOutlined />,
@@ -48,14 +50,15 @@ const Layout = () => {
     }]);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.clear();
     setIsLogin(false);
+    authService.logout(true);
   };
 
   const MenuDrop = () => (
     <Menu
-      //onClick={handleLogout}
+      onClick={handleLogout}
       items={[
         {
           label: 'Cerrar sesión',

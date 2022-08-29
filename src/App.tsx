@@ -1,10 +1,7 @@
-import { useContext } from "react";
 import { Routes } from "./routers/Routes";
-// import { AuthProvider } from "oidc-react";
-// import LoggedIn from './LoggedIn';
-// import { Authenticate } from "react-oidc-client";
 // import { AuthContext, AuthProvider, TAuthConfig } from "react-oauth2-code-pkce";
-import { AuthProvider, AuthService, useAuth  } from "react-oauth2-pkce";
+import { AuthProvider, AuthService } from "react-oauth2-pkce";
+import configuration from "./configuration.json";
 
 /* const authConfig: TAuthConfig = {
   clientId: 'ssb_monitoring_frontend_test_pre',
@@ -72,113 +69,21 @@ const App = () => (
 
 export default App; */
 
-/* const oidcConfig = {
-  onSignIn: async (user: any) => {
-    alert('You just signed in, congratz! Check out the console!');
-    console.log(user);
-    window.location.hash = '';
-  },
-  authority: 'https://pre-identity.santillanaconnect.co',
-  clientId: 'ssb_monitoring_frontend_test_pre',
-  responseType: 'code',
-  redirectUri:'https://localhost:3000/',
-  scope: 'openid email external.info apiSsb/full_access',
-};
-
-// oidc-react
-function App() {
-  return (
-    <AuthProvider {...oidcConfig}>
-      <div className="App">
-        <header className="App-header">
-          <p>OIDC React</p>
-          <LoggedIn />
-        </header>
-      </div>
-    </AuthProvider>
-  );
-}
-
-export default App; */
-
-
-/* const MySecretContent: React.FC = () => <div>My secure content</div>;
-const LoadingComponent: React.FC = () => <div>My loader</div>
-
-// react-oidc-client
-const App = () => {
-  return (
-    <Authenticate
-      LoadingComponent={LoadingComponent}
-      loginCompletePath="/"
-      logoutPath="/"
-      userManagerSettings={{
-        loadUserInfo: true,
-        // userStore: new WebStorageStateStore({
-       //   store: localStorage
-       // }),
-        authority: "https://pre-identity.santillanaconnect.co",
-        client_id: "ssb_monitoring_frontend_test_pre",
-        redirect_uri: "https://localhost:3000",
-        response_type: "code",
-        scope: "openid profile email external.info apiSsb/full_access", // add other scopes here
-        post_logout_redirect_uri: "https://localhost:3000"
-      }}
-    >
-      <MySecretContent />
-    </Authenticate>
-  );
-}
-
-export default App; */
-
-const Home = () => {
-  const { authService } = useAuth();
-  const token = authService.getAuthTokens();
-
-  const login = async () => {
-    authService.authorize()
-  }
-  const logout = async () => {
-    authService.logout(true);
-  }
-
-  if (authService.isPending()) {
-    return <div>Loading...</div>
-  }
-
-  if (!authService.isAuthenticated()) {
-    return (
-      <div>
-        <p>Not Logged in yet: {JSON.stringify(token)} </p>
-        <button onClick={login}>Login</button>
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <p>Logged in! {JSON.stringify(token)}</p>
-      <button onClick={logout}>Logout</button>
-    </div>
-  )
-}
-
 const authService = new AuthService({
-  clientId: 'ssb_monitoring_frontend_test_pre',
-  authorizeEndpoint: 'https://pre-identity.santillanaconnect.com/connect/authorize',
-  tokenEndpoint: 'https://pre-identity.santillanaconnect.com/connect/token',
-  logoutEndpoint: 'https://pre-identity.santillanaconnect.com/connect/endsession',
+  clientId: configuration.connect.clientId,
+  authorizeEndpoint: configuration.connect.authorizeEndpoint,
+  tokenEndpoint: configuration.connect.tokenEndpoint,
+  logoutEndpoint: configuration.connect.logoutEndpoint,
   location: window.location,
-  provider: 'https://pre-identity.santillanaconnect.com',
-  redirectUri: 'https://localhost:3000',
-  scopes: ['openid', 'email', 'external.info', 'apiSsb/full_access']
+  provider: configuration.connect.provider,
+  redirectUri: configuration.connect.redirectUri,
+  scopes: configuration.connect.scopes
 });
 
 const App = () => {
   return (
     <AuthProvider authService={authService} >
-      <Home />
+      <Routes />
     </AuthProvider>
   )
 }

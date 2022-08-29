@@ -5,23 +5,20 @@ import {
   Route,
   Routes as RoutesRender,
 } from "react-router-dom";
-import { useAuth } from "oidc-react";
 import AppContext from "../context/AppContext";
-import { useUserIdentity } from "react-oidc-client";
+import { useAuth  } from "react-oauth2-pkce";
 import { verifyToken } from "../utils/auth";
 
 const AsyncLogin = lazy(() => import("../pages/Login"));
 const AsyncHomePage = lazy(() => import("../pages/Home"));
 const AsyncLayout = lazy(() => import("../pages/Layout"));
+const AsyncCompanies = lazy(() => import("../pages/Company/Companies"));
 
 export const Routes: React.FC = () => {
   const [defaultMenu, setDefaultMenu] = useState('home');
   const [loading, setLoading] = useState(true);
-  const [isLogin, setIsLogin] = useState(false);
+  const { authService } = useAuth();
   
-  // const auth = useAuth();
-  // console.log('dataUser ===== ',  auth?.userData);
-
   useEffect(() => {
     // if (localStorage.getItem('token_access')) {
     //   if (verifyToken(Number(localStorage.getItem('token_exp')))) {
@@ -39,10 +36,10 @@ export const Routes: React.FC = () => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ setIsLogin, defaultMenu, setDefaultMenu }}>
+    <AppContext.Provider value={{ setIsLogin: () => {}, defaultMenu, setDefaultMenu }}>
       {!loading && (
         <Router>
-          {!isLogin ? (
+          {!authService.isAuthenticated() ? (
             <RoutesRender>
               <Route path="/login" element={<AsyncLogin />} />
               <Route
@@ -54,11 +51,11 @@ export const Routes: React.FC = () => {
             <RoutesRender>
               <Route path="/" element={<AsyncLayout />}>
                 <Route index element={<AsyncHomePage />} />
-                {/* <Route path="permissions">
-                  <Route index element={<Users />} />
-                  <Route path="form" element={<User />} />
-                  <Route path="form/:id" element={<User />} />
-                </Route> */}
+                <Route path="companies">
+                  <Route index element={<AsyncCompanies />} />
+                  {/* <Route path="form" element={<User />} />
+                  <Route path="form/:id" element={<User />} /> */}
+                </Route>
                 {/* <Route path="menu">
                   <Route index element={<Menus />} />
                   <Route path="form" element={<Menu />} />

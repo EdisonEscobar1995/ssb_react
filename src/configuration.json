@@ -1,0 +1,11 @@
+{
+  "connect": {
+    "clientId": "ssb_monitoring_frontend_test_pre",
+    "authorizeEndpoint": "https://pre-identity.santillanaconnect.com/connect/authorize",
+    "tokenEndpoint": "https://pre-identity.santillanaconnect.com/connect/token",
+    "logoutEndpoint": "https://pre-identity.santillanaconnect.com/connect/endsession",
+    "provider": "https://pre-identity.santillanaconnect.com",
+    "redirectUri": "https://localhost:3000",
+    "scopes": ["openid", "email", "external.info", "apiSsb/full_access"]
+  }
+}

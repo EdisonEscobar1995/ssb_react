@@ -1,0 +1,10 @@
+@import "../assets/sass/variables";
+
+.login-container {
+  display: flex;
+  background-color: $bg-light;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
