@@ -1,0 +1,23 @@
+@import "../assets/sass/variables";
+
+.site-layout-background {
+  background: #fff;
+}
+
+.title-form-row {
+  margin-bottom: 30px;
+  .ant-col:first-child {
+    font-size: 30px;
+    font-weight: 600;
+    color: $primary-color;
+  }
+}
+
+.ant-menu-inline.ant-menu-root {
+  .ant-menu-item {
+    > .ant-menu-title-content {
+      white-space: normal;
+      line-height: 16px;
+    }
+  }
+} 
