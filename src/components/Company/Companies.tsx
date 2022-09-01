@@ -17,34 +17,40 @@ const Companies = ({
   const columns = [
     {
       title: 'Id empresa',
-      dataIndex: 'empresaCode',
-      key: 'empresaCode',
+      dataIndex: 'id',
+      key: 'id',
       render: (text: any) => <a>{text}</a>,
       sorter: (a: any, b: any) => {
-        const n = a.empresaCode.toLocaleLowerCase().localeCompare(b.empresaCode.toLocaleLowerCase());
-        return n === 0 && a !== b ? b.localeCompare(a) : n;
+        const n = a.id.toLocaleLowerCase().localeCompare(b.id.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.id.localeCompare(a.id) : n;
       },
     },
     {
       title: 'Descripción',
-      dataIndex: 'empresaDescription',
-      key: 'empresaDescription',
+      dataIndex: 'description',
+      key: 'description',
       sorter: (a: any, b: any) => {
-        const n = a.empresaDescription.toLocaleLowerCase().localeCompare(b.empresaDescription.toLocaleLowerCase());
-        return n === 0 && a !== b ? b.localeCompare(a) : n;
+        const n = a.description.toLocaleLowerCase().localeCompare(b.description.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.description.localeCompare(a.description) : n;
       }
     },
     {
       title: 'Id País',
-      dataIndex: 'order',
-      key: 'order',
-      sorter: (a: any, b: any) => a.order - b.order,
+      dataIndex: 'idCountry',
+      key: 'idCountry',
+      sorter: (a: any, b: any) => {
+        const n = a.idCountry.toLocaleLowerCase().localeCompare(b.idCountry.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.idCountry.localeCompare(a.idCountry) : n;
+      },
     },
     {
       title: 'Parámetro Empresa',
       key: 'param',
       dataIndex: 'param',
-      sorter: (a: any, b: any) => a.param.length - b.param.length
+      sorter: (a: any, b: any) => {
+        const n = a.param.toLocaleLowerCase().localeCompare(b.param.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.param.localeCompare(a.param) : n;
+      },
     }
   ];
 
@@ -60,9 +66,9 @@ const Companies = ({
       dataSource={dataSource}
       addButtons={[
         {
-          text: 'Create QPR',
-          icon: <UsergroupDeleteOutlined />,
-          onClick: () => navigate("form"),
+          // text: 'Create QPR',
+          // icon: <UsergroupDeleteOutlined />,
+          // onClick: () => navigate("form"),
         },
       ]}
       addActions={[
@@ -71,17 +77,7 @@ const Companies = ({
           icon: <EditOutlined />,
           type: 'primary',
           onClick: (record: any) => {
-            debugger;
             navigate(`form/${record._id}`);
-          }
-        },
-        {
-          text: 'Supplier Investigation',
-          icon: <DoubleRightOutlined />,
-          type: 'primary',
-          onClick: (record: any) => {
-            debugger;
-            navigate(`/ticketresponse`);
           }
         },
         {

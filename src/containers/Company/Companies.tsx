@@ -1,26 +1,48 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Company } from "../../interfaces/Company";
 import { Companies } from "../../components";
 import AppContext from "../../context/AppContext";
+import { CompanyService } from "../../services/company";
+import { useAuth } from "react-oauth2-pkce";
+
 
 const CompaniesContainer = () => {
   const { setDefaultMenu } = useContext(AppContext);
+  const { authService } = useAuth();
+  const token = authService.getAuthTokens();
+  const [loading, setLoading] = useState(false);
+  const [dataSource, setDataSource] = useState<Company[] | []>([]);
+
+  const getCompanies = async () => {
+    try {
+      setLoading(true);
+      const companies: Company[] =
+        await CompanyService.getCompanies(token?.access_token);
+      setDataSource(companies);      
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error('Error en getCompanies = ', error);
+    }
+  };
 
   useEffect(() => {
     if (setDefaultMenu) {
       setDefaultMenu('companies');
     };
+    getCompanies();
   }, []);
   
   const dataCompanies = [
     {
         
-      "param": "MX/UNOI",
+      "param": "MX/UNOI", //paramEmpresa
       "country": {
-        "refId": "00000000-0000-1000-0000-000000000165"
+        "refId": "00000000-0000-1000-0000-000000000165" //idCountry
       },
-      "empresaDescription": "Sistemas Educativos de Enseñanza S.A. de C.V.",
+      "empresaDescription": "Sistemas Educativos de Enseñanza S.A. de C.V.", //description
       "order": 1000,
-      "refId": "00000000-0000-1000-0000-000000000001",
+      "refId": "00000000-0000-1000-0000-000000000001", //idEmpresa
       "empresaCode": "MX.UNO"
     },
     {
@@ -918,8 +940,8 @@ const CompaniesContainer = () => {
 
   return (
     <Companies
-      dataSource={dataCompanies}
-      loading={false}
+      dataSource={dataSource}
+      loading={loading}
       handleDelete={()=>{}}
     />
   )

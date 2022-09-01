@@ -40,13 +40,8 @@ const Layout = () => {
     }, {
       key: 'companies',
       icon: <UsergroupAddOutlined />,
-      label: 'Permisos',
+      label: 'Compañias',
       onClick: () => navigate("/companies", { replace: true })
-    }, {
-      key: 'audit',
-      icon: <RadarChartOutlined />,
-      label: 'Audit & Self assessment',
-      onClick: () => navigate("/audit", { replace: true })
     }]);
   }, []);
 

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "lib": [
+      "es5",
       "dom",
       "dom.iterable",
       "esnext"
@@ -16,6 +17,10 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "strictNullChecks": false,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Routes } from "./routers/Routes";
 // import { AuthContext, AuthProvider, TAuthConfig } from "react-oauth2-code-pkce";
 import { AuthProvider, AuthService } from "react-oauth2-pkce";
@@ -77,13 +78,16 @@ const authService = new AuthService({
   location: window.location,
   provider: configuration.connect.provider,
   redirectUri: configuration.connect.redirectUri,
-  scopes: configuration.connect.scopes
+  scopes: configuration.connect.scopes,
+  autoRefresh: true
 });
 
 const App = () => {
   return (
     <AuthProvider authService={authService} >
-      <Routes />
+      <Suspense fallback={<></>}>
+        <Routes />
+      </Suspense>
     </AuthProvider>
   )
 }

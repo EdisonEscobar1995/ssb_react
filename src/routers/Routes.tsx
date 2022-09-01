@@ -7,7 +7,9 @@ import {
 } from "react-router-dom";
 import AppContext from "../context/AppContext";
 import { useAuth  } from "react-oauth2-pkce";
-import { verifyToken } from "../utils/auth";
+import { isValidToken } from "../utils/auth";
+import { AuthTokens } from "react-oauth2-pkce/dist/AuthService";
+import { TokenCognitoService } from "../services/security/tokenCognito";
 
 const AsyncLogin = lazy(() => import("../pages/Login"));
 const AsyncHomePage = lazy(() => import("../pages/Home"));
@@ -18,20 +20,27 @@ export const Routes: React.FC = () => {
   const [defaultMenu, setDefaultMenu] = useState('home');
   const [loading, setLoading] = useState(true);
   const { authService } = useAuth();
-  
+    
+  const refreshToken = async (token: AuthTokens) => {
+    console.log('refrescando token');
+    await authService.fetchToken(token.refresh_token, true);
+  };
+
+  const getFirstToken = async () => {
+    debugger;
+    const token = await TokenCognitoService.getTokenCognito();
+    return token;
+  };
+
   useEffect(() => {
-    // if (localStorage.getItem('token_access')) {
-    //   if (verifyToken(Number(localStorage.getItem('token_exp')))) {
-    //     setIsLogin(true);
-    //   } else {
-    //     localStorage.clear();
-    //     setIsLogin(false);
-    //   }
-    //   setLoading(false);
-    // } else {
-    //   setLoading(false);
-    // }
-    // setIsLogin(true);
+    if (authService.isAuthenticated()) {
+      getFirstToken();
+      const token = authService.getAuthTokens();
+      console.log('expiracion === ', new Date(token?.expires_at));
+      if (token && !isValidToken(token?.expires_at)) {
+        refreshToken(token);
+      }
+    }
     setLoading(false);
   }, []);
 

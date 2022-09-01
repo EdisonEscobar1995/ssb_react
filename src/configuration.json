@@ -6,6 +6,11 @@
     "logoutEndpoint": "https://pre-identity.santillanaconnect.com/connect/endsession",
     "provider": "https://pre-identity.santillanaconnect.com",
     "redirectUri": "https://localhost:3000",
-    "scopes": ["openid", "email", "external.info", "apiSsb/full_access"]
+    "scopes": ["openid", "email", "external.info", "apiSsb/full_access", "offline_access"]
+  },
+  "cognito": {
+    "tokenEndpoint": "https://auth-sms-backend-test.auth.us-east-1.amazoncognito.com/oauth2/token",
+    "clientId": "489tsk21scq9q608ot96jnufdk",
+    "clientSecret": "16smluongc4vth07bs2so7opbkpg06jfob8f87knps46nt6ahjv"
   }
 }
