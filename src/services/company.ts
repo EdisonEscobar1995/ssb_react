@@ -7,7 +7,7 @@ const { REACT_APP_URL_BASE } = process.env;
 export class CompanyService {
 
   public static getCompanies = async (token: string) => {
-    const url = `${REACT_APP_URL_BASE}/empresas`;
+    const url = `${REACT_APP_URL_BASE}/sif/v3/empresas`;
     const { data } = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,

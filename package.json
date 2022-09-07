@@ -1,6 +1,6 @@
 {
   "name": "ssb",
-  "proxy": "http://localhost:3000",
+  "proxy": "https://pre-identity.santillanaconnect.com/",
   "version": "0.1.0",
   "private": true,
   "sideEffects": [

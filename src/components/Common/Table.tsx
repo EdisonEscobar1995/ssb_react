@@ -9,6 +9,7 @@ interface ITable {
   addButtons: any[] | [];
   addActions: any[] | [];
   loading: boolean;
+  filterComponent?: React.ReactNode;
 }
 
 export const Table = ({
@@ -17,7 +18,8 @@ export const Table = ({
   dataSource,
   addButtons,
   addActions,
-  loading
+  loading,
+  filterComponent,
 }: ITable) => {
   const columnsWithMore = [...columns];
   if (addActions && addActions.length > 0) {
@@ -73,6 +75,7 @@ export const Table = ({
             ))}
         </Col>
       </Row>
+      {filterComponent && <>{filterComponent}</>}
       <TableAnt
         scroll={{ x: true }}
         columns={columnsWithMore}

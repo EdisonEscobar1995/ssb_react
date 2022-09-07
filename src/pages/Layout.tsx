@@ -6,18 +6,18 @@ import {
   HomeOutlined,
   UsergroupAddOutlined,
   UserOutlined,
-  RadarChartOutlined
+  AlertOutlined
 } from '@ant-design/icons';
 import { useAuth  } from "react-oauth2-pkce";
-import '../sass/layout.scss';
-
 import logoReact from "../logo.svg";
 import AppContext from '../context/AppContext';
+import { getRol } from '../utils/common';
+import '../sass/layout.scss';
 
 const { Header, Content, Sider } = LayoutAnt;
 
 const Layout = () => {
-  const { defaultMenu, setIsLogin } = useContext(AppContext);
+  const { defaultMenu, setIsLogin, userInfo } = useContext(AppContext);
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [items2, setItems2] = useState<MenuProps['items'] | []>([]);
@@ -29,20 +29,34 @@ const Layout = () => {
     setCollapsed(collapsed);
   };
 
-  useEffect(() => {
-    // setLoading(true);
-    // getAllMenus();
-    setItems2([{
+  const getMenus = () => {
+    const menus = [{
       key: 'home',
       icon: <HomeOutlined />,
       label: 'Inicio',
       onClick: () => navigate("/", { replace: true })
-    }, {
-      key: 'companies',
-      icon: <UsergroupAddOutlined />,
-      label: 'Compañias',
-      onClick: () => navigate("/companies", { replace: true })
-    }]);
+    }];
+    const permission = Object.keys(userInfo).length > 0 ? getRol(userInfo) : false;
+    if (permission) {
+      menus.push({
+        key: 'companies',
+        icon: <UsergroupAddOutlined />,
+        label: 'Compañias',
+        onClick: () => navigate("/companies", { replace: true })
+      }, {
+        key: 'alerts',
+        icon: <AlertOutlined />,
+        label: 'Alertas',
+        onClick: () => navigate("/alerts", { replace: true })
+      });
+    }
+    return menus;
+  };
+
+  useEffect(() => {
+    // setLoading(true);
+    const menuAccess = getMenus();
+    setItems2(menuAccess);
   }, []);
 
   const handleLogout = async () => {

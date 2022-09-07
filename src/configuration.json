@@ -3,6 +3,7 @@
     "clientId": "ssb_monitoring_frontend_test_pre",
     "authorizeEndpoint": "https://pre-identity.santillanaconnect.com/connect/authorize",
     "tokenEndpoint": "https://pre-identity.santillanaconnect.com/connect/token",
+    "infoUserEndpoint": "https://pre-identity.santillanaconnect.com/connect/userinfo",
     "logoutEndpoint": "https://pre-identity.santillanaconnect.com/connect/endsession",
     "provider": "https://pre-identity.santillanaconnect.com",
     "redirectUri": "https://localhost:3000",

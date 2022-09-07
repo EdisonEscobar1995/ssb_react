@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { Table } from "../Common/Table";
-import { Row, Col, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
   UsergroupDeleteOutlined,
@@ -8,36 +6,20 @@ import {
   DeleteOutlined,
   DoubleRightOutlined
 } from '@ant-design/icons';
-import { Company } from "../../interfaces/Company";
-import '../../sass/company.scss';
 
-const { Option } = Select;
-
-interface ICompaniesProps {
-  dataSource: Company[] | [];
-  loading: boolean;
-  handleDelete: Function;
-  dataCountries: string[] | [];
-  handleChangeFilter: Function;
-  filterValue: string;
-}
-
-const Companies = ({
+const AlertsList = ({
   dataSource,
   loading,
   handleDelete,
-  dataCountries,
-  handleChangeFilter,
-  filterValue
-}: ICompaniesProps) => {
+  handleVisibleForm
+}: any) => {
   const navigate = useNavigate();
   
   const columns = [
     {
-      title: 'Id empresa',
-      dataIndex: 'id',
-      key: 'id',
-      filters: [{}],
+      title: 'Backend',
+      dataIndex: 'backend',
+      key: 'backend',
       render: (text: any) => <a>{text}</a>,
       sorter: (a: any, b: any) => {
         const n = a.id.toLocaleLowerCase().localeCompare(b.id.toLocaleLowerCase());
@@ -45,27 +27,27 @@ const Companies = ({
       },
     },
     {
-      title: 'Descripción',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Operation',
+      dataIndex: 'operation',
+      key: 'operation',
       sorter: (a: any, b: any) => {
         const n = a.description.toLocaleLowerCase().localeCompare(b.description.toLocaleLowerCase());
         return n === 0 && a !== b ? b.description.localeCompare(a.description) : n;
       }
     },
     {
-      title: 'Id País',
-      dataIndex: 'idCountry',
-      key: 'idCountry',
+      title: 'Number requests',
+      dataIndex: 'numberRequests',
+      key: 'numberRequests',
       sorter: (a: any, b: any) => {
         const n = a.idCountry.toLocaleLowerCase().localeCompare(b.idCountry.toLocaleLowerCase());
         return n === 0 && a !== b ? b.idCountry.localeCompare(a.idCountry) : n;
       },
     },
     {
-      title: 'Parámetro Empresa',
-      key: 'param',
-      dataIndex: 'param',
+      title: 'Timestamp',
+      key: 'timestamp',
+      dataIndex: 'timestamp',
       sorter: (a: any, b: any) => {
         const n = a.param.toLocaleLowerCase().localeCompare(b.param.toLocaleLowerCase());
         return n === 0 && a !== b ? b.param.localeCompare(a.param) : n;
@@ -78,38 +60,16 @@ const Companies = ({
     handleDelete(id);
   };
 
-  const FilterComponent = () => (
-    <Row className="filter-companies">
-      <Col span={2}>
-        <b>Id País: </b>
-      </Col>
-      <Col span={10}>
-        <Select
-          allowClear
-          showSearch
-          defaultValue={filterValue}
-          onChange={(value) => handleChangeFilter(value)}
-          style={{ width: '100%' }}
-        >
-          {dataCountries.map((item, index) =>
-            <Option key={`opt-${index}-${item}`} value={item}>{item}</Option>
-          )}
-        </Select>
-      </Col>
-    </Row>
-  );
-
   return (
     <Table
-      title="Compañias"
+      title="Alertas"
       columns={columns}
       dataSource={dataSource}
-      filterComponent={<FilterComponent />}
       addButtons={[
         {
-          // text: 'Create QPR',
-          // icon: <UsergroupDeleteOutlined />,
-          // onClick: () => navigate("form"),
+          text: 'Crear Alerta',
+          icon: <UsergroupDeleteOutlined />,
+          onClick: () => handleVisibleForm(),
         },
       ]}
       addActions={[
@@ -118,7 +78,7 @@ const Companies = ({
           icon: <EditOutlined />,
           type: 'primary',
           onClick: (record: any) => {
-            navigate(`form/${record._id}`);
+            handleVisibleForm(record);
           }
         },
         {
@@ -135,4 +95,4 @@ const Companies = ({
   );
 };
 
-export default Companies;
+export default AlertsList;

@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import { ConfigProvider } from "antd";
+import esES from 'antd/es/locale/es_ES';
 import { Routes } from "./routers/Routes";
 // import { AuthContext, AuthProvider, TAuthConfig } from "react-oauth2-code-pkce";
 import { AuthProvider, AuthService } from "react-oauth2-pkce";
@@ -86,7 +88,9 @@ const App = () => {
   return (
     <AuthProvider authService={authService} >
       <Suspense fallback={<></>}>
-        <Routes />
+        <ConfigProvider locale={esES}>
+          <Routes />
+        </ConfigProvider>
       </Suspense>
     </AuthProvider>
   )
