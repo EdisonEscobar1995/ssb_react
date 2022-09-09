@@ -22,8 +22,8 @@ const AlertsList = ({
       key: 'backend',
       render: (text: any) => <a>{text}</a>,
       sorter: (a: any, b: any) => {
-        const n = a.id.toLocaleLowerCase().localeCompare(b.id.toLocaleLowerCase());
-        return n === 0 && a !== b ? b.id.localeCompare(a.id) : n;
+        const n = a.backend.toLocaleLowerCase().localeCompare(b.backend.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.backend.localeCompare(a.backend) : n;
       },
     },
     {
@@ -31,26 +31,23 @@ const AlertsList = ({
       dataIndex: 'operation',
       key: 'operation',
       sorter: (a: any, b: any) => {
-        const n = a.description.toLocaleLowerCase().localeCompare(b.description.toLocaleLowerCase());
-        return n === 0 && a !== b ? b.description.localeCompare(a.description) : n;
+        const n = a.operation.toLocaleLowerCase().localeCompare(b.operation.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.operation.localeCompare(a.operation) : n;
       }
     },
     {
       title: 'Number requests',
       dataIndex: 'numberRequests',
       key: 'numberRequests',
-      sorter: (a: any, b: any) => {
-        const n = a.idCountry.toLocaleLowerCase().localeCompare(b.idCountry.toLocaleLowerCase());
-        return n === 0 && a !== b ? b.idCountry.localeCompare(a.idCountry) : n;
-      },
+      sorter: (a: any, b: any) => parseFloat(a.numberRequests) - parseFloat(b.numberRequests),
     },
     {
       title: 'Timestamp',
       key: 'timestamp',
       dataIndex: 'timestamp',
       sorter: (a: any, b: any) => {
-        const n = a.param.toLocaleLowerCase().localeCompare(b.param.toLocaleLowerCase());
-        return n === 0 && a !== b ? b.param.localeCompare(a.param) : n;
+        const n = a.timestamp.toLocaleLowerCase().localeCompare(b.timestamp.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.timestamp.localeCompare(a.timestamp) : n;
       },
     }
   ];
@@ -74,7 +71,7 @@ const AlertsList = ({
       ]}
       addActions={[
         {
-          text: 'Edit',
+          text: 'Editar',
           icon: <EditOutlined />,
           type: 'primary',
           onClick: (record: any) => {
@@ -82,11 +79,11 @@ const AlertsList = ({
           }
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           icon: <DeleteOutlined />,
           type: 'danger',
           okText: "Ok",
-          confirm: 'Are you sure you want to delete this QPR?',
+          confirm: '¿Está seguro que desea eliminar esta alarma?',
           onClick: (record: any) => onDelete(record._id),
         },
       ]}

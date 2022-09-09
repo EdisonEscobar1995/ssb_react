@@ -31,7 +31,7 @@ export const Table = ({
       render: (value: any, record: any) =>
         addActions &&
         addActions.map((action, index) => (
-          <Tooltip key={`action-button-${index}-${record.id}`} title={action.text}>
+          <Tooltip key={`action-button-${index}-${record?.id || index}`} title={action.text}>
             {' '}
             {action.confirm ? (
               <Popconfirm

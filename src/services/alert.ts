@@ -15,7 +15,19 @@ export class AlertService {
       },
     });
     console.log(data);
-    const companies: Alert[] = AlertMapper.mapperCompanies(data.empresaList);
+    debugger;
+    const companies: Alert[] = AlertMapper.mapperAlerts(data);
     return companies;
+  }
+
+  public static saveAlert = async (token: string, data: Alert, operationAlert: string) => {
+    const url = `${REACT_APP_URL_BASE}/v0.1/agent/${operationAlert}`;
+    const { data: dataResponse } = await axios.post(url, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json;odata=verbose",
+      },
+    });
+    return dataResponse;
   }
 }

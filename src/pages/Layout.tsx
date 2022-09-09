@@ -57,7 +57,8 @@ const Layout = () => {
     // setLoading(true);
     const menuAccess = getMenus();
     setItems2(menuAccess);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo]);
 
   const handleLogout = async () => {
     localStorage.clear();

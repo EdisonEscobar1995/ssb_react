@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Form, Input, Row, Col, Modal
+  Form, Input, Row, Col, Modal, InputNumber, Select
 } from 'antd';
 import { Alert } from '../../interfaces/Alert';
 
@@ -13,6 +13,13 @@ interface IAlertForm {
   alertSelect: Alert
 }
 
+interface IOptionSelect {
+  id: string | number;
+  name: string;
+}
+
+const { Option } = Select;
+
 const AlertForm = ({
   visible,
   readonly,
@@ -22,7 +29,7 @@ const AlertForm = ({
   alertSelect,
 }: IAlertForm) => {
   const {
-    backend, numRequests, operation, timestamp
+    backend, numberRequests, operation, timestamp
   } = alertSelect;
 
   const [form] = Form.useForm();
@@ -31,7 +38,7 @@ const AlertForm = ({
     if (visible) {
       form.setFieldsValue({
         backend,
-        numRequests,
+        numberRequests: parseFloat(numberRequests),
         operation,
         timestamp
       });
@@ -39,11 +46,28 @@ const AlertForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
+  const getValueOperationAlert = (operation: string) => {
+    let operationAlert = "";
+    switch (operation) {
+      case "W":
+        operationAlert = "warning";
+        break;
+      case "C":
+        operationAlert = "cutoff";
+        break;
+      default:
+        operationAlert = "recover";
+        break;
+    }
+    return operationAlert;
+  };
+
   const onOk = () => {
     form.validateFields().then((values) => {
       handleSubmit({
-        ...values
-      });
+        backend: values.backend,
+        numberRequests: values.numberRequests,
+      }, getValueOperationAlert(values.operation));
     });
   };
 
@@ -55,6 +79,43 @@ const AlertForm = ({
     labelCol: { xxl: 8, xl: 9 },
     wrapperCol: { xxl: 16, xl: 15 },
   };
+
+  const operationOptions: IOptionSelect[] = [{
+    id: "W",
+    name: "Warning"
+  }, {
+    id: "C",
+    name: "Cutoff"
+  }, {
+    id: "R",
+    name: "Recover"
+  }];
+
+  const optionsBackend: IOptionSelect[] = [{
+    id: "LMS",
+    name: "LMS"
+  }, {
+    id: "BDC",
+    name: "BDC"
+  }, {
+    id: "SSB",
+    name: "SSB"
+  }, {
+    id: "INFR",
+    name: "INFR"
+  }, {
+    id: "SCN",
+    name: "SCN"
+  }, {
+    id: "MS",
+    name: "MS"
+  }, {
+    id: "WCO",
+    name: "WCO"
+  }, {
+    id: "STL",
+    name: "STL"
+  }];
 
   return (
     <Modal
@@ -76,34 +137,6 @@ const AlertForm = ({
         <Row gutter={8}>
           <Col span={20}>
             <Form.Item
-              label="Backend"
-              name="backend"
-              rules={[
-                { required: true, message: 'Backend must be required' }
-              ]}
-              {...formFullLayout}
-            >
-              <Input disabled={readonly}/>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={8}>
-          <Col span={20}>
-            <Form.Item
-              label="Number Requests"
-              name="numRequests"
-              rules={[
-                { required: true, message: 'Number Requests must be required' }
-              ]}
-              {...formFullLayout}
-            >
-              <Input disabled={readonly} />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={8}>
-          <Col span={20}>
-            <Form.Item
               label="Operation"
               name="operation"
               rules={[
@@ -111,24 +144,66 @@ const AlertForm = ({
               ]}
               {...formFullLayout}
             >
-              <Input disabled={readonly} />
+              <Select disabled={readonly}>
+                {operationOptions.map((item: IOptionSelect) =>
+                  <Option value={item.id}>{item.name}</Option>
+                )}
+              </Select>
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={8}>
           <Col span={20}>
             <Form.Item
-              label="Timestamp"
-              name="timestamp"
+              label="Backend"
+              name="backend"
               rules={[
-                { required: true, message: 'Timestamp must be required' }
+                { required: true, message: 'Backend must be required' }
               ]}
               {...formFullLayout}
             >
-              <Input disabled={readonly} />
+              <Select disabled={readonly}>
+                {optionsBackend.map((item: IOptionSelect) =>
+                  <Option value={item.id}>{item.name}</Option>
+                )}
+              </Select>
             </Form.Item>
           </Col>
         </Row>
+        <Row gutter={8}>
+          <Col span={20}>
+            <Form.Item
+              label="Number Requests"
+              name="numberRequests"
+              rules={[
+                { required: true, message: 'Number Requests must be required' }
+              ]}
+              {...formFullLayout}
+            >
+              <InputNumber
+                style={{ width: '100%' }}
+                disabled={readonly}
+                min={0}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        {alertSelect.backend !== "" && (
+          <Row gutter={8}>
+            <Col span={20}>
+              <Form.Item
+                label="Timestamp"
+                name="timestamp"
+                rules={[
+                  { required: true, message: 'Timestamp must be required' }
+                ]}
+                {...formFullLayout}
+              >
+                <Input disabled />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
       </Form>
     </Modal>
   );

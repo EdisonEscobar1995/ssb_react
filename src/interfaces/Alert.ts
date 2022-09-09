@@ -1,7 +1,7 @@
 export interface Alert {
   id?: string;
   backend: string;
-  operation: string;
-  numRequests: string;
-  timestamp: string;
+  operation?: string;
+  numberRequests: string;
+  timestamp?: string;
 }

@@ -6,7 +6,7 @@ export class AlertMapper {
     if (data) {
       option = {
         backend: data.backend || '',
-        numRequests: data.numRequests || '',
+        numberRequests: data.numberRequests || '',
         operation: data.operation || '',
         timestamp: data.timestamp || '',
       };
@@ -14,9 +14,9 @@ export class AlertMapper {
     return option;
   }
 
-  public static mapperCompanies(data: any): Alert[] {
+  public static mapperAlerts(data: any): Alert[] {
     return data.map((item: any) => {
-      return this.mapperAlert(item?.empresa);
+      return this.mapperAlert(item);
     });
   }
 

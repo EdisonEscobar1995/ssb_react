@@ -33,14 +33,28 @@ export const Routes: React.FC = () => {
   };
 
   const getFirstTokenCognito = async () => {
-    const tokenCognitoAux = await TokenCognitoService.getTokenCognito();
-    setTokenCognito(tokenCognitoAux);
+    try {
+      setLoading(true);
+      const tokenCognitoAux = await TokenCognitoService.getTokenCognito();
+      setTokenCognito(tokenCognitoAux);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error en getFirstTokenCognito = ', error);
+      setLoading(false);
+    }
   };
 
   const getInfoUser = async () => {
-    const user = await UserService.getUserInfo(token?.access_token);
-    console.log("user == ", user);
-    setUserInfo(user);
+    try {
+      setLoading(true);
+      const user = await UserService.getUserInfo(token?.access_token);
+      console.log("user == ", user);
+      setUserInfo(user); 
+      setLoading(false);
+    } catch (error) {
+      console.error('Error en getInfoUser = ', error);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -77,7 +91,7 @@ export const Routes: React.FC = () => {
             <RoutesRender>
               <Route path="/" element={<AsyncLayout />}>
                 <Route index element={<AsyncHomePage />} />
-                {(Object.keys('userInfo').length > 0 && getRol(userInfo)) && (
+                {(Object.keys(userInfo).length > 0 && getRol(userInfo)) && (
                   <>
                     <Route path="companies">
                       <Route index element={<AsyncCompanies />} />
