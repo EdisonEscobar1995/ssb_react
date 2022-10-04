@@ -4,7 +4,6 @@ import {
   UsergroupDeleteOutlined,
   EditOutlined,
   DeleteOutlined,
-  DoubleRightOutlined
 } from '@ant-design/icons';
 
 const AlertsList = ({
@@ -20,7 +19,7 @@ const AlertsList = ({
       title: 'Backend',
       dataIndex: 'backend',
       key: 'backend',
-      render: (text: any) => <a>{text}</a>,
+      render: (text: any) => <a data-testid='span-backend'>{text}</a>,
       sorter: (a: any, b: any) => {
         const n = a.backend.toLocaleLowerCase().localeCompare(b.backend.toLocaleLowerCase());
         return n === 0 && a !== b ? b.backend.localeCompare(a.backend) : n;

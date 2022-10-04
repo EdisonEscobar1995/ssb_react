@@ -81,7 +81,7 @@ const Layout = () => {
   return (
     <LayoutAnt>
       <Header className="header header-fixed">
-        <div className="logo">
+        <div className="logo" onClick={() => navigate("/", { replace: true })}>
           <img src={logoReact} className="App-logo" alt="logo" />
         </div>
         <Dropdown

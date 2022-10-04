@@ -14,7 +14,7 @@ export class CompanyService {
         Accept: "application/json;odata=verbose",
       },
     });
-    console.log(data);
+    console.log('data == ', data);
     const companies: Company[] = CompanyMapper.mapperCompanies(data.empresaList);
     return companies;
   }

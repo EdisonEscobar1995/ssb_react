@@ -49,7 +49,8 @@ const AlertForm = ({
   const getValueOperationAlert = (operation: string) => {
     let operationAlert = "";
     switch (operation) {
-      case "W":
+      case "WC":
+      case "WE":
         operationAlert = "warning";
         break;
       case "C":
@@ -81,8 +82,11 @@ const AlertForm = ({
   };
 
   const operationOptions: IOptionSelect[] = [{
-    id: "W",
-    name: "Warning"
+    id: "WC",
+    name: "Warning cutoff"
+  }, {
+    id: "WE",
+    name: "Warning error"
   }, {
     id: "C",
     name: "Cutoff"
