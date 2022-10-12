@@ -32,8 +32,8 @@ const CompaniesContainer = () => {
       setLoading(true);
       const companies: Company[] =
         await CompanyService.getCompanies(token?.access_token);
-      // setDataSource(companies);
-      // setDataSourceGlobal(companies);
+      setDataSource(companies);
+      setDataSourceGlobal(companies);
       handleUniqueCountries(companies);
       setLoading(false);
     } catch (error) {
