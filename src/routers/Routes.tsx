@@ -9,15 +9,16 @@ import AppContext from "../context/AppContext";
 import { useAuth } from "react-oauth2-pkce";
 import { isValidToken } from "../utils/auth";
 import { AuthTokens } from "react-oauth2-pkce/dist/AuthService";
-import { TokenCognitoService } from "../services/security/tokenCognito";
 import { UserService } from "../services/security/userConnect";
-import { getRol } from "../utils/common";
+import { getAnyRol } from "../utils/common";
+import { getFirstTokenCognito } from "../utils/cognito";
 
 const AsyncLogin = lazy(() => import("../pages/Login"));
 const AsyncHomePage = lazy(() => import("../pages/Home"));
 const AsyncLayout = lazy(() => import("../pages/Layout"));
 const AsyncCompanies = lazy(() => import("../pages/Company/Companies"));
 const AsyncAlerts = lazy(() => import("../pages/Alert/Alerts"));
+const AsyncCognito = lazy(() => import("../pages/Cognito/Cognito"));
 
 export const Routes: React.FC = () => {
   const { authService } = useAuth();
@@ -30,18 +31,6 @@ export const Routes: React.FC = () => {
   const refreshToken = async (token: AuthTokens) => {
     console.log('refrescando token');
     await authService.fetchToken(token.refresh_token, true);
-  };
-
-  const getFirstTokenCognito = async () => {
-    try {
-      setLoading(true);
-      const tokenCognitoAux = await TokenCognitoService.getTokenCognito();
-      setTokenCognito(tokenCognitoAux);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error en getFirstTokenCognito = ', error);
-      setLoading(false);
-    }
   };
 
   const getInfoUser = async () => {
@@ -60,7 +49,7 @@ export const Routes: React.FC = () => {
   useEffect(() => {
     if (authService.isAuthenticated()) {
       getInfoUser();
-      getFirstTokenCognito();
+      getFirstTokenCognito(setLoading, setTokenCognito);
       console.log('expiracion === ', new Date(token?.expires_at));
       if (token && !isValidToken(token?.expires_at)) {
         refreshToken(token);
@@ -75,7 +64,9 @@ export const Routes: React.FC = () => {
       defaultMenu,
       setDefaultMenu,
       userInfo,
-      tokenCognito
+      tokenCognito,
+      setTokenCognito,
+      setLoading
     }}>
       {!loading && (
         <Router>
@@ -91,7 +82,7 @@ export const Routes: React.FC = () => {
             <RoutesRender>
               <Route path="/" element={<AsyncLayout />}>
                 <Route index element={<AsyncHomePage />} />
-                {(Object.keys(userInfo).length > 0 && getRol(userInfo)) && (
+                {(Object.keys(userInfo).length > 0 && getAnyRol(userInfo)) && (
                   <>
                     <Route path="companies">
                       <Route index element={<AsyncCompanies />} />
@@ -101,27 +92,11 @@ export const Routes: React.FC = () => {
                     <Route path="alerts">
                       <Route index element={<AsyncAlerts />} />
                       {/* <Route path="form" element={<Menu />} />
-                  <Route path="form/:id" element={<Menu />} /> */}
+                        <Route path="form/:id" element={<Menu />} /> */}
                     </Route>
-                    {/* <Route path="register">
-                  <Route index element={<Registers />} />
-                  <Route path="form" element={<Register />} />
-                  <Route path="form/:id" element={<Register />} />
-                </Route>
-                <Route path="ticket">
-                  <Route index element={<QualityReports />} />
-                  <Route path="form" element={<QualityReport />} />
-                  <Route path="form/:id" element={<QualityReport />} />
-                </Route>
-                <Route path="audit">
-                  <Route index element={<Audits />} />
-                  <Route path="form" element={<Audit />} />
-                  <Route path="form/:id" element={<Audit />} />
-                </Route>
-                <Route path="ticketresponse">
-                  <Route index element={<SupplierInvestigation />} />
-                  <Route path="form/:idTicket/:id" element={<SupplierInvestigation />} />
-                </Route> */}
+                    <Route path="cognito">
+                      <Route index element={<AsyncCognito />} />
+                    </Route>
                   </>
                 )}
 

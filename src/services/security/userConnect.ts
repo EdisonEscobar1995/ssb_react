@@ -16,13 +16,8 @@ export class UserService {
     console.log('dataUserInfo == ', data);
     const userInfo: UserInfo = UserInfoMapper.mapperInfo(data);
     if (userInfo) {
-      // const dataRoles = await this.getUserRoles(token, userInfo.userName);
-      // userInfo.roles = dataRoles || [];
-      userInfo.roles = [{
-        key: 'visualizer',
-        name: 'visualizer',
-        role: 'visualizer'
-      }];
+      const dataRoles = await this.getUserRoles(token, userInfo.userName);
+      userInfo.roles = dataRoles || [];
     }
     return userInfo;
   };

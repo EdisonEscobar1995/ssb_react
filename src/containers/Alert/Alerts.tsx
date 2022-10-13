@@ -79,7 +79,7 @@ const AlertsContainer = () => {
   };
 
   const handleSubmit = async (values: Alert, operationAlert: string) => {
-    debugger;
+    // debugger;
     try {
       const response = await AlertService.saveAlert(token?.access_token, values, operationAlert);
       console.log(response);
@@ -96,20 +96,20 @@ const AlertsContainer = () => {
 
   return (
     <>
-    <AlertsList
-      dataSource={dataSource}
-      loading={loading}
-      handleDelete={() => { }}
-      handleVisibleForm={handleVisibleForm}
-    />
-    <AlertForm
-      title={titleFormAlert}
-      visible={visible}
-      handleCancel={() => setVisible(false)}
-      handleSubmit={handleSubmit}
-      readonly={false}
-      alertSelect={alertSelect}
-    />
+      <AlertsList
+        dataSource={dataSource}
+        loading={loading}
+        handleDelete={() => { }}
+        handleVisibleForm={handleVisibleForm}
+      />
+      <AlertForm
+        title={titleFormAlert}
+        visible={visible}
+        handleCancel={() => setVisible(false)}
+        handleSubmit={handleSubmit}
+        readonly={false}
+        alertSelect={alertSelect}
+      />
     </>
   )
 };

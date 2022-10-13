@@ -4,6 +4,7 @@ import { Companies } from "../../components";
 import AppContext from "../../context/AppContext";
 import { CompanyService } from "../../services/company";
 import { useAuth } from "react-oauth2-pkce";
+import CompanyForm from "../../components/Company/CompanyForm";
 
 
 const CompaniesContainer = () => {
@@ -14,7 +15,18 @@ const CompaniesContainer = () => {
   const [dataSourceGlobal, setDataSourceGlobal] = useState<Company[] | []>([]);
   const [dataSource, setDataSource] = useState<Company[] | []>([]);
   const [countriesData, setCountriesData] = useState<string[] | []>([]);
+  const [visible, setVisible] = useState(false);
+  const [titleFormCompany, setTitleFormCompany] = useState("");
   const [filterValue, setFilterValue] = useState<string>("");
+  const emptyCompany: Company = {
+    id: "",
+    param: "",
+    idCountry: "",
+    description: "",
+    order: 0,
+    empresaCode: ""
+  };
+  const [companySelect, setCompanySelect] = useState<Company>(emptyCompany);
 
   const handleUniqueCountries = (dataCompanies: Company[]) => {
     const countries: string[] = [];
@@ -60,15 +72,36 @@ const CompaniesContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (    
-    <Companies
-      dataSource={dataSource}
-      loading={loading}
-      handleDelete={()=>{}}
-      dataCountries={countriesData}
-      handleChangeFilter={handleChangeFilter}
-      filterValue={filterValue}
-    />
+  const handleVisibleForm = (selectAlert?: Company) => {
+    setTitleFormCompany("Crear compañia");
+    setCompanySelect(emptyCompany);
+    if (selectAlert) {
+      setCompanySelect(selectAlert);
+      setTitleFormCompany("Editar compañia");
+    }
+    setVisible(true);
+  };
+
+  return (
+    <>
+      <Companies
+        dataSource={dataSource}
+        loading={loading}
+        handleDelete={() => { }}
+        dataCountries={countriesData}
+        handleChangeFilter={handleChangeFilter}
+        filterValue={filterValue}
+        handleVisibleForm={handleVisibleForm}
+      />
+      <CompanyForm
+        title={titleFormCompany}
+        visible={visible}
+        handleCancel={() => setVisible(false)}
+        handleSubmit={() => {}}
+        readonly={false}
+        companySelect={companySelect}
+      />
+    </>
   )
 };
 

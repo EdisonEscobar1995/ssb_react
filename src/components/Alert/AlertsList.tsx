@@ -19,7 +19,10 @@ const AlertsList = ({
       title: 'Backend',
       dataIndex: 'backend',
       key: 'backend',
-      render: (text: any) => <a data-testid='span-backend'>{text}</a>,
+      render: (text: any, record: any) =>
+        <a data-testid='span-backend' onClick={() => handleVisibleForm(record)}>
+          {text}
+        </a>,
       sorter: (a: any, b: any) => {
         const n = a.backend.toLocaleLowerCase().localeCompare(b.backend.toLocaleLowerCase());
         return n === 0 && a !== b ? b.backend.localeCompare(a.backend) : n;
@@ -69,22 +72,22 @@ const AlertsList = ({
         },
       ]}
       addActions={[
-        {
-          text: 'Editar',
-          icon: <EditOutlined />,
-          type: 'primary',
-          onClick: (record: any) => {
-            handleVisibleForm(record);
-          }
-        },
-        {
-          text: 'Eliminar',
-          icon: <DeleteOutlined />,
-          type: 'danger',
-          okText: "Ok",
-          confirm: '¿Está seguro que desea eliminar esta alarma?',
-          onClick: (record: any) => onDelete(record._id),
-        },
+        // {
+        //   text: 'Editar',
+        //   icon: <EditOutlined />,
+        //   type: 'primary',
+        //   onClick: (record: any) => {
+        //     handleVisibleForm(record);
+        //   }
+        // },
+        // {
+        //   text: 'Eliminar',
+        //   icon: <DeleteOutlined />,
+        //   type: 'danger',
+        //   okText: "Ok",
+        //   confirm: '¿Está seguro que desea eliminar esta alarma?',
+        //   onClick: (record: any) => onDelete(record._id),
+        // },
       ]}
       loading={loading}
     />

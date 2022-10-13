@@ -6,15 +6,18 @@ import {
   HomeOutlined,
   UsergroupAddOutlined,
   UserOutlined,
-  AlertOutlined
+  AlertOutlined,
+  TableOutlined
 } from '@ant-design/icons';
 import { useAuth  } from "react-oauth2-pkce";
 import logoReact from "../logo.svg";
 import AppContext from '../context/AppContext';
 import { getRol } from '../utils/common';
+import '../sass/generic.scss';
 import '../sass/layout.scss';
+import { ROL_VISUALIZER, ROL_EDITOR } from '../utils/constants';
 
-const { Header, Content, Sider } = LayoutAnt;
+const { Header, Content, Sider, Footer } = LayoutAnt;
 
 const Layout = () => {
   const { defaultMenu, setIsLogin, userInfo } = useContext(AppContext);
@@ -36,14 +39,24 @@ const Layout = () => {
       label: 'Inicio',
       onClick: () => navigate("/", { replace: true })
     }];
-    const permission = Object.keys(userInfo).length > 0 ? getRol(userInfo) : false;
-    if (permission) {
+    const permissionEditor = Object.keys(userInfo).length > 0 ? getRol(userInfo, ROL_EDITOR) : false;
+    const permissionVisualizador = Object.keys(userInfo).length > 0 ? getRol(userInfo, ROL_VISUALIZER) : false;
+
+    if (permissionEditor || permissionVisualizador) {
       menus.push({
         key: 'companies',
         icon: <UsergroupAddOutlined />,
         label: 'Compañias',
         onClick: () => navigate("/companies", { replace: true })
       }, {
+        key: 'cognito',
+        icon: <TableOutlined />,
+        label: 'Cognito',
+        onClick: () => navigate("/cognito", { replace: true })
+      });
+    }
+    if (permissionEditor) {
+      menus.push({
         key: 'alerts',
         icon: <AlertOutlined />,
         label: 'Alertas',
@@ -81,7 +94,7 @@ const Layout = () => {
   return (
     <LayoutAnt>
       <Header className="header header-fixed">
-        <div className="logo" onClick={() => navigate("/", { replace: true })}>
+        <div className="logo" onClick={() => navigate("/", { replace: true })} style={{ cursor: 'pointer' }}>
           <img src={logoReact} className="App-logo" alt="logo" />
         </div>
         <Dropdown
@@ -138,6 +151,7 @@ const Layout = () => {
           </Content>
         </LayoutAnt>
       </LayoutAnt>
+      <Footer style={{ textAlign: 'center' }}>Copyright @ 2022 Santillana</Footer>
     </LayoutAnt>
   );
 };

@@ -15,7 +15,6 @@ export class AlertService {
       },
     });
     console.log(data);
-    debugger;
     const companies: Alert[] = AlertMapper.mapperAlerts(data);
     return companies;
   }
