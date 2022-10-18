@@ -50,8 +50,10 @@ const AlertForm = ({
     let operationAlert = "";
     switch (operation) {
       case "WC":
+        operationAlert = "warningcutoff";
+        break;
       case "WE":
-        operationAlert = "warning";
+        operationAlert = "warningerror";
         break;
       case "C":
         operationAlert = "cutoff";
